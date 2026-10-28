@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sari-Sari Store Debt List</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Arial, sans-serif;
+      color: #49363d;
+      background: #fff5f7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 32px 16px;
+    }
+
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      color: #a94f70;
+      font-size: clamp(1.7rem, 5vw, 2.3rem);
+    }
+
+    header p {
+      margin: 0;
+      color: #78636c;
+    }
+
+    .page-link {
+      display: inline-block;
+      margin-top: 14px;
+      color: #984761;
+      font-weight: 700;
+    }
+
+    .connection-status {
+      margin: 12px 0 0;
+      color: #9c4260;
+      font-size: 0.9rem;
+    }
+
+    .connection-status.status-error {
+      color: #a52b2b;
+    }
+
+    .card {
+      margin-bottom: 20px;
+      padding: 22px;
+      border: 1px solid #f1dce3;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 4px 14px rgb(116 55 78 / 7%);
+    }
+
+    .total-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: #b85f7d;
+      color: #fff;
+    }
+
+    .total-card p {
+      margin: 0 0 6px;
+      color: #ffe7ef;
+    }
+
+    #total-debt {
+      font-size: clamp(1.7rem, 5vw, 2.2rem);
+      font-weight: 700;
+    }
+
+    .count {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgb(255 255 255 / 16%);
+      white-space: nowrap;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: 1.15rem;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    label {
+      display: grid;
+      gap: 7px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid #e7cbd4;
+      border-radius: 8px;
+      font: inherit;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #ba6a87;
+      outline: 3px solid rgb(186 106 135 / 18%);
+    }
+
+    .items-editor {
+      display: grid;
+      gap: 12px;
+    }
+
+    .items-editor h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .borrowed-item-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 110px auto auto;
+      align-items: end;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .item-subtotal {
+      min-width: 90px;
+      padding-bottom: 12px;
+      color: #654653;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .payment-controls {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      min-width: 220px;
+    }
+
+    .payment-controls input {
+      width: 110px;
+    }
+
+    .calculated-total {
+      margin: 0;
+      color: #654653;
+      font-weight: 700;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    button {
+      min-height: 42px;
+      padding: 9px 13px;
+      border: 0;
+      border-radius: 8px;
+      background: #b85f7d;
+      color: white;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #984761;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+
+    button.secondary {
+      border: 1px solid #e6ccd5;
+      background: #fff;
+      color: #654653;
+    }
+
+    button.secondary:hover {
+      background: #fff1f5;
+    }
+
+    .list-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .list-heading h2 {
+      margin: 0;
+    }
+
+    .search {
+      max-width: 270px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th,
+    td {
+      padding: 13px 10px;
+      border-bottom: 1px solid #f3e3e8;
+      vertical-align: middle;
+    }
+
+    th {
+      color: #816975;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+    }
+
+    td.amount {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    td.borrowed-items {
+      min-width: 150px;
+      white-space: pre-line;
+    }
+
+    td.actions {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    td.actions button {
+      min-height: 36px;
+      margin-left: 5px;
+      font-size: 0.85rem;
+    }
+
+    .empty {
+      padding: 28px 10px;
+      color: #806d75;
+      text-align: center;
+    }
+
+    .privacy-note {
+      margin: 0;
+      color: #806d75;
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 22px 12px;
+      }
+
+      .card {
+        padding: 17px;
+      }
+
+      form {
+        grid-template-columns: 1fr;
+      }
+
+      .full-width {
+        grid-column: auto;
+      }
+
+      .borrowed-item-row {
+        grid-template-columns: minmax(0, 1fr) minmax(90px, 0.5fr);
+      }
+
+      .borrowed-item-row button {
+        grid-column: 1 / -1;
+      }
+
+      .item-subtotal {
+        grid-column: 1 / -1;
+        padding: 0;
+      }
+
+      .list-heading {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .search {
+        max-width: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Sari-Sari Store Debt List</h1>
+      <p>Keep track of what customers owe your store.</p>
+      <p class="connection-status" id="connection-status" role="status" aria-live="polite">Loading saved debts...</p>
+      <a class="page-link" href="products.html">Manage product prices</a>
+    </header>
+
+    <section class="card total-card" aria-live="polite">
+      <div>
+        <p>Total unpaid debt</p>
+        <div id="total-debt">₱0.00</div>
+      </div>
+      <div class="count"><span id="customer-count">0</span> customers</div>
+    </section>
+
+    <section class="card">
+      <h2>Add a customer debt</h2>
+      <form id="debt-form">
+        <label>
+          Customer name
+          <input id="customer-name" name="name" type="text" maxlength="80" autocomplete="name" required>
+        </label>
+        <div class="items-editor full-width">
+          <h3>Borrowed products and quantities</h3>
+          <div id="borrowed-items"></div>
+          <button class="secondary" id="add-item" type="button">Add another item</button>
+          <p class="calculated-total">Total price: <span id="new-debt-total">₱0.00</span></p>
+        </div>
+        <button class="full-width" type="submit">Add debt</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <div class="list-heading">
+        <h2>Customer debts and balances</h2>
+        <input class="search" id="search" type="search" placeholder="Search customer..." aria-label="Search customers">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Customer balance</th>
+              <th>Date added</th>
+              <th>Debt</th>
+              <th>Remaining</th>
+              <th>Items borrowed</th>
+              <th><span class="sr-only">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody id="debt-list"></tbody>
+        </table>
+        <div class="empty" id="empty-message">No debts yet. Add a customer above to get started.</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="list-heading">
+        <h2>Payment history</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Payment date</th>
+              <th>Amount paid</th>
+            </tr>
+          </thead>
+          <tbody id="payment-history"></tbody>
+        </table>
+        <div class="empty" id="payment-history-empty">No payments recorded yet.</div>
+      </div>
+    </section>
+  </main>
+  <script src="client.js"></script>
+</body>
+</html>
