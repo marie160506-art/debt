@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sari-Sari Store Debt List</title>
+  <link rel="icon" type="image/png" href="store-picture.png">
   <style>
     :root {
       color-scheme: light;
@@ -28,6 +29,17 @@
 
     header {
       margin-bottom: 24px;
+    }
+
+    .brand-picture {
+      display: block;
+      width: min(100%, 520px);
+      max-height: 260px;
+      margin-bottom: 18px;
+      border: 1px solid #f1dce3;
+      border-radius: 14px;
+      object-fit: cover;
+      object-position: center;
     }
 
     h1 {
@@ -324,6 +336,7 @@
 <body>
   <main>
     <header>
+      <img class="brand-picture" src="store-picture.png" alt="Maria's Sari-Sari Store illustration">
       <h1>Sari-Sari Store Debt List</h1>
       <p>Keep track of what customers owe your store.</p>
       <p class="connection-status" id="connection-status" role="status" aria-live="polite">Loading saved debts...</p>

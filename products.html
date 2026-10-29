@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Product Prices | Sari-Sari Store</title>
+  <link rel="icon" type="image/png" href="store-picture.png">
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Arial, sans-serif;
+      color: #49363d;
+      background: #fff5f7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 32px 16px;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 24px;
+    }
+
+    .brand-picture {
+      display: block;
+      width: min(100%, 460px);
+      max-height: 230px;
+      margin-bottom: 18px;
+      border: 1px solid #f1dce3;
+      border-radius: 14px;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      color: #a94f70;
+      font-size: clamp(1.7rem, 5vw, 2.3rem);
+    }
+
+    header p,
+    .privacy-note {
+      color: #806d75;
+    }
+
+    .page-link {
+      display: inline-block;
+      margin-top: 8px;
+      color: #984761;
+      font-weight: 700;
+    }
+
+    .card {
+      margin-bottom: 20px;
+      padding: 22px;
+      border: 1px solid #f1dce3;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 4px 14px rgb(116 55 78 / 7%);
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: 1.15rem;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 180px auto;
+      align-items: end;
+      gap: 14px;
+    }
+
+    label {
+      display: grid;
+      gap: 7px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid #e7cbd4;
+      border-radius: 8px;
+      font: inherit;
+    }
+
+    input:focus {
+      border-color: #ba6a87;
+      outline: 3px solid rgb(186 106 135 / 18%);
+    }
+
+    button {
+      min-height: 42px;
+      padding: 9px 13px;
+      border: 0;
+      border-radius: 8px;
+      background: #b85f7d;
+      color: white;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #984761;
+    }
+
+    button.secondary {
+      border: 1px solid #e6ccd5;
+      background: #fff;
+      color: #654653;
+    }
+
+    button.secondary:hover {
+      background: #fff1f5;
+    }
+
+    .list-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .list-heading h2 {
+      margin: 0;
+    }
+
+    .search {
+      max-width: 270px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th,
+    td {
+      padding: 13px 10px;
+      border-bottom: 1px solid #f3e3e8;
+      vertical-align: middle;
+    }
+
+    th {
+      color: #816975;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+    }
+
+    td.price {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    td.actions {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    td.actions button {
+      min-height: 36px;
+      margin-left: 5px;
+      font-size: 0.85rem;
+    }
+
+    .empty {
+      padding: 28px 10px;
+      color: #806d75;
+      text-align: center;
+    }
+
+    .status {
+      min-height: 1.2em;
+      color: #9c4260;
+      font-size: 0.9rem;
+    }
+
+    .status-error {
+      color: #a52b2b;
+    }
+
+    .privacy-note {
+      margin: 0;
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 22px 12px;
+      }
+
+      .card {
+        padding: 17px;
+      }
+
+      form {
+        grid-template-columns: 1fr;
+      }
+
+      .list-heading {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .search {
+        max-width: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <img class="brand-picture" src="store-picture.png" alt="Maria's Sari-Sari Store illustration">
+      <h1>Product Price List</h1>
+      <p>Save your store products and prices for quick reference.</p>
+      <a class="page-link" href="index.html">Back to customer debts</a>
+    </header>
+
+    <section class="card">
+      <h2 id="form-title">Add a product</h2>
+      <form id="product-form">
+        <label>
+          Product name
+          <input id="product-name" type="text" maxlength="80" required>
+        </label>
+        <label>
+          Price (₱)
+          <input id="product-price" type="number" min="0.01" max="99999999.99" step="0.01" placeholder="0.00" required>
+        </label>
+        <button id="save-button" type="submit">Add product</button>
+      </form>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="card">
+      <div class="list-heading">
+        <h2>All products</h2>
+        <input class="search" id="search" type="search" placeholder="Search products..." aria-label="Search products">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Price</th>
+              <th><span class="sr-only">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody id="product-list"></tbody>
+        </table>
+        <div class="empty" id="empty-message">No products yet. Add your first product above.</div>
+      </div>
+    </section>
+
+    <p class="privacy-note">Products and prices are saved in this browser on this device.</p>
+  </main>
+  <script src="products.js"></script>
+</body>
+</html>
